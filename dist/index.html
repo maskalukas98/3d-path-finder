@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>My first three.js app</title>
+    <style>
+        body { margin: 0; }
+    </style>
+    <link href="toastr.css" rel="stylesheet"/>
+  <script type="module" crossorigin src="/assets/index-f0tu1UjO.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-bA85upBq.css">
+</head>
+<body class="auto-cursor">
+    <div id="intro" style="display: flex">
+        <div>
+            <div id="intro-line1" class="intro-line"></div>
+            <div id="intro-line2" class="intro-line"></div>
+            <div id="intro-line3" class="intro-line"></div>
+        </div>
+        <div>
+            <h1>Path finder</h1>
+            <strong>Presentation web created by Lukas Maska</strong>
+
+            <div id="application-loader-box">
+                <div id="application-loader-num">0 %</div>
+                <div id="application-loader-bar">
+                    <div id="application-loader-bar-inside"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-ui">
+        <div class="left-bar">
+            <div id="base-section" class="bar-section">
+                <span class="bar-section-title">Base</span>
+
+                <span id="start-btn" class="btn pointer-cursor">
+                    Start manual
+
+                    <svg id="start-game-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg>
+                    <svg id="stop-game-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 128C0 92.7 28.7 64 64 64H320c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z"/></svg>
+                </span>
+
+                <span id="start-auto-btn" class="btn pointer-cursor">
+                    Start auto
+
+                    <svg id="start-auto-game-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg>
+                    <svg id="stop-auto-game-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 128C0 92.7 28.7 64 64 64H320c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z"/></svg>
+                </span>
+
+                <span id="restart-btn" class="btn pointer-cursor">
+                Reset
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48.5 224H40c-13.3 0-24-10.7-24-24V72c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2L98.6 96.6c87.6-86.5 228.7-86.2 315.8 1c87.5 87.5 87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3c-62.2-62.2-162.7-62.5-225.3-1L185 183c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8H48.5z"/></svg>
+            </span>
+
+                <span id="sound-btn" class="btn pointer-cursor">
+                Sound
+                <svg id="sound-icon-off" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M301.1 34.8C312.6 40 320 51.4 320 64V448c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352H64c-35.3 0-64-28.7-64-64V224c0-35.3 28.7-64 64-64h67.8L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3zM425 167l55 55 55-55c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-55 55 55 55c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-55-55-55 55c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l55-55-55-55c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"/></svg>
+                <svg id="sound-icon-on" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M533.6 32.5C598.5 85.2 640 165.8 640 256s-41.5 170.7-106.4 223.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C557.5 398.2 592 331.2 592 256s-34.5-142.2-88.7-186.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM473.1 107c43.2 35.2 70.9 88.9 70.9 149s-27.7 113.8-70.9 149c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C475.3 341.3 496 301.1 496 256s-20.7-85.3-53.2-111.8c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zm-60.5 74.5C434.1 199.1 448 225.9 448 256s-13.9 56.9-35.4 74.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C393.1 284.4 400 271 400 256s-6.9-28.4-17.7-37.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM301.1 34.8C312.6 40 320 51.4 320 64V448c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352H64c-35.3 0-64-28.7-64-64V224c0-35.3 28.7-64 64-64h67.8L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3z"/></svg>
+            </span>
+
+                <span id="edit-mode-btn" class="btn pointer-cursor">
+                Edit mode
+                <svg id="edit-mode-enter-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg>
+                <svg id="edit-mode-left-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg>
+            </span>
+            </div>
+
+            <div class="bar-section">
+                <span class="bar-section-title">Camera</span>
+                <span id="world-view-btn" class="btn pointer-cursor">
+                World view
+            </span>
+
+                <span id="car-driver-view-btn" class="btn pointer-cursor disabled running-btn">
+                Driver view
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></svg>
+            </span>
+                <span id="car-above-view-btn" class="btn pointer-cursor disabled running-btn">
+                Above view
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M128 32h32c17.7 0 32 14.3 32 32V96H96V64c0-17.7 14.3-32 32-32zm64 96V448c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V388.9c0-34.6 9.4-68.6 27.2-98.3C40.9 267.8 49.7 242.4 53 216L60.5 156c2-16 15.6-28 31.8-28H192zm227.8 0c16.1 0 29.8 12 31.8 28L459 216c3.3 26.4 12.1 51.8 25.8 74.6c17.8 29.7 27.2 63.7 27.2 98.3V448c0 17.7-14.3 32-32 32H352c-17.7 0-32-14.3-32-32V128h99.8zM320 64c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32V96H320V64zm-32 64V288H224V128h64z"/></svg>
+            </span>
+            </div>
+
+            <div id="car-view-bar" class="bar-section">
+                <span class="bar-section-title">Car</span>
+                <span id="car-light-btn" class="btn pointer-cursor disabled running-btn">
+                Car light
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M272 384c9.6-31.9 29.5-59.1 49.2-86.2l0 0c5.2-7.1 10.4-14.2 15.4-21.4c19.8-28.5 31.4-63 31.4-100.3C368 78.8 289.2 0 192 0S16 78.8 16 176c0 37.3 11.6 71.9 31.4 100.3c5 7.2 10.2 14.3 15.4 21.4l0 0c19.8 27.1 39.7 54.4 49.2 86.2H272zM192 512c44.2 0 80-35.8 80-80V416H112v16c0 44.2 35.8 80 80 80zM112 176c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-61.9 50.1-112 112-112c8.8 0 16 7.2 16 16s-7.2 16-16 16c-44.2 0-80 35.8-80 80z"/></svg>
+            </span>
+                <span id="stop-car-btn" class="btn pointer-cursor disabled running-btn">
+                Engine
+
+                <svg id="icon-stop" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm192-96H320c17.7 0 32 14.3 32 32V320c0 17.7-14.3 32-32 32H192c-17.7 0-32-14.3-32-32V192c0-17.7 14.3-32 32-32z"/></svg>
+                <svg id="icon-play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg>
+            </span>
+                <span id="car-show-licence-btn" class="btn pointer-cursor disabled running-btn">
+                Driver licence
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M528 160V416c0 8.8-7.2 16-16 16H320c0-44.2-35.8-80-80-80H176c-44.2 0-80 35.8-80 80H64c-8.8 0-16-7.2-16-16V160H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zM272 256a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zm104-48c-13.3 0-24 10.7-24 24s10.7 24 24 24h80c13.3 0 24-10.7 24-24s-10.7-24-24-24H376zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24h80c13.3 0 24-10.7 24-24s-10.7-24-24-24H376z"/></svg>
+            </span>
+                <div class="bar-section-box">
+                <span id="car-change-speed-btn" class="btn pointer-cursor disabled running-btn">
+                    Change speed
+
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm320 96c0-26.9-16.5-49.9-40-59.3V88c0-13.3-10.7-24-24-24s-24 10.7-24 24V292.7c-23.5 9.5-40 32.5-40 59.3c0 35.3 28.7 64 64 64s64-28.7 64-64zM144 176a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm-16 80a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm288 32a32 32 0 1 0 0-64 32 32 0 1 0 0 64zM400 144a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+                </span>
+
+                    <span id="car-speed-value" class="bar-section-info-text"> 1</span>
+                </div>
+            </div>
+
+            <div class="bar-section">
+                <span class="bar-section-title">World section</span>
+                <span id="helicopter-btn" class="btn pointer-cursor disabled running-btn">
+                Helicopter help
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M128 32c0-17.7 14.3-32 32-32H544c17.7 0 32 14.3 32 32s-14.3 32-32 32H384v64h32c88.4 0 160 71.6 160 160v64c0 17.7-14.3 32-32 32H384 320c-20.1 0-39.1-9.5-51.2-25.6l-71.4-95.2c-3.5-4.7-8.3-8.3-13.7-10.5L47.2 198.1c-9.5-3.8-16.7-12-19.2-22L5 83.9C2.4 73.8 10.1 64 20.5 64H48c10.1 0 19.6 4.7 25.6 12.8L112 128H320V64H160c-17.7 0-32-14.3-32-32zM384 320H512V288c0-53-43-96-96-96H384V320zM630.6 425.4c12.5 12.5 12.5 32.8 0 45.3l-3.9 3.9c-24 24-56.6 37.5-90.5 37.5H256c-17.7 0-32-14.3-32-32s14.3-32 32-32H536.2c17 0 33.3-6.7 45.3-18.7l3.9-3.9c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
+            </span>
+                <span id="meteor-btn" class="btn pointer-cursor disabled running-btn">
+                Meteor
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M493.7 .9L299.4 75.6l2.3-29.3c1-12.8-12.8-21.5-24-15.1L101.3 133.4C38.6 169.7 0 236.6 0 309C0 421.1 90.9 512 203 512c72.4 0 139.4-38.6 175.7-101.3L480.8 234.3c6.5-11.1-2.2-25-15.1-24l-29.3 2.3L511.1 18.3c.6-1.5 .9-3.2 .9-4.8C512 6 506 0 498.5 0c-1.7 0-3.3 .3-4.8 .9zM192 192a128 128 0 1 1 0 256 128 128 0 1 1 0-256zm0 96a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm16 96a16 16 0 1 0 0-32 16 16 0 1 0 0 32z"/></svg>
+            </span>
+            </div>
+
+            <div id="edit-mode-section" class="bar-section" style="display: none">
+                <span class="bar-section-title">Tools</span>
+
+                <span id="edit-mode-remove-btn" class="btn pointer-cursor">
+                Remove
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z"/></svg>
+            </span>
+
+                <span class="bar-section-title">Components</span>
+
+                <span  class="add-component-btn btn pointer-cursor" data-component="house">
+                Add house
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/></svg>
+            </span>
+
+                <span  class="add-component-btn btn pointer-cursor" data-component="car">
+                Add car
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M135.2 117.4L109.1 192H402.9l-26.1-74.6C372.3 104.6 360.2 96 346.6 96H165.4c-13.6 0-25.7 8.6-30.2 21.4zM39.6 196.8L74.8 96.3C88.3 57.8 124.6 32 165.4 32H346.6c40.8 0 77.1 25.8 90.6 64.3l35.2 100.5c23.2 9.6 39.6 32.5 39.6 59.2V400v48c0 17.7-14.3 32-32 32H448c-17.7 0-32-14.3-32-32V400H96v48c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V400 256c0-26.7 16.4-49.6 39.6-59.2zM128 288a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm288 32a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/></svg>
+            </span>
+
+                <span  class="add-component-btn btn pointer-cursor" data-component="field">
+                Add field
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"/></svg>
+            </span>
+
+                <span  class="add-component-btn btn pointer-cursor" data-component="semaphore">
+                Add semaphore
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M64 0C28.7 0 0 28.7 0 64V352c0 88.4 71.6 160 160 160s160-71.6 160-160V64c0-35.3-28.7-64-64-64H64zm96 416a48 48 0 1 1 0-96 48 48 0 1 1 0 96zm48-176a48 48 0 1 1 -96 0 48 48 0 1 1 96 0zm-48-80a48 48 0 1 1 0-96 48 48 0 1 1 0 96z"/></svg>
+            </span>
+
+                <span  class="add-component-btn btn pointer-cursor" data-component="streetCamera">
+                Add street camera
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M149.1 64.8L138.7 96H64C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H373.3L362.9 64.8C356.4 45.2 338.1 32 317.4 32H194.6c-20.7 0-39 13.2-45.5 32.8zM256 192a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/></svg>
+            </span>
+
+                <span  class="add-component-btn btn pointer-cursor" data-component="gasStation">
+                Add gas station
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M32 64C32 28.7 60.7 0 96 0H256c35.3 0 64 28.7 64 64V256h8c48.6 0 88 39.4 88 88v32c0 13.3 10.7 24 24 24s24-10.7 24-24V222c-27.6-7.1-48-32.2-48-62V96L384 64c-8.8-8.8-8.8-23.2 0-32s23.2-8.8 32 0l77.3 77.3c12 12 18.7 28.3 18.7 45.3V168v24 32V376c0 39.8-32.2 72-72 72s-72-32.2-72-72V344c0-22.1-17.9-40-40-40h-8V448c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32V64zM96 80v96c0 8.8 7.2 16 16 16H240c8.8 0 16-7.2 16-16V80c0-8.8-7.2-16-16-16H112c-8.8 0-16 7.2-16 16z"/></svg>
+            </span>
+
+                <span  class="add-component-btn btn pointer-cursor" data-component="target">
+                Add target
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M448 256A192 192 0 1 0 64 256a192 192 0 1 0 384 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm256 80a80 80 0 1 0 0-160 80 80 0 1 0 0 160zm0-224a144 144 0 1 1 0 288 144 144 0 1 1 0-288zM224 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg>
+            </span>
+            </div>
+        </div>
+
+        <div id="bottom-bar">
+            <div id="gas-station-ask" class="ask-section" style="display: none">
+                <span id="fuel-btn" class="btn">Fuel</span>
+                <span id="dont-fuel-btn" class="btn">Don't fuel</span>
+            </div>
+        </div>
+
+        <div id="right-bar">
+            <div id="camera-list-section" class="bar-section">
+                <span class="bar-section-title">List of street cameras</span>
+            </div>
+
+        </div>
+
+        <div id="top-bar">
+            <div id="camera-display-section" class="top-bar-section" style="display: none">
+             <span class="bar-section-title">
+                    <span style="margin-right: 15px">Camera: </span>
+                    <span id="camera-id"></span>
+                </span>
+
+
+                <div id="record-box" class="bar-section-box">
+                    <svg id="record-btn" class="icon-btn pointer-cursor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M0 128C0 92.7 28.7 64 64 64H320c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128zM559.1 99.8c10.4 5.6 16.9 16.4 16.9 28.2V384c0 11.8-6.5 22.6-16.9 28.2s-23 5-32.9-1.6l-96-64L416 337.1V320 192 174.9l14.2-9.5 96-64c9.8-6.5 22.4-7.2 32.9-1.6z"/></svg>
+                    <div id="record-circle" class="inactive"></div>
+                </div>
+
+                <div id="zoom-box">
+                    <svg id="zoom-plus" class="icon-btn pointer-cursor" style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM184 296c0 13.3 10.7 24 24 24s24-10.7 24-24V232h64c13.3 0 24-10.7 24-24s-10.7-24-24-24H232V120c0-13.3-10.7-24-24-24s-24 10.7-24 24v64H120c-13.3 0-24 10.7-24 24s10.7 24 24 24h64v64z"/></svg>
+                    <svg id="zoom-minus" class="icon-btn pointer-cursor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM136 184c-13.3 0-24 10.7-24 24s10.7 24 24 24H280c13.3 0 24-10.7 24-24s-10.7-24-24-24H136z"/></svg>
+                    <span id="current-zoom" class="video-player-tit"></span>
+                </div>
+
+                <div>
+                    <svg id="analyze-btn" class="icon-btn pointer-cursor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M528 160V416c0 8.8-7.2 16-16 16H320c0-44.2-35.8-80-80-80H176c-44.2 0-80 35.8-80 80H64c-8.8 0-16-7.2-16-16V160H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zM272 256a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zm104-48c-13.3 0-24 10.7-24 24s10.7 24 24 24h80c13.3 0 24-10.7 24-24s-10.7-24-24-24H376zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24h80c13.3 0 24-10.7 24-24s-10.7-24-24-24H376z"/></svg>
+                </div>
+
+                <div>
+                    <svg  id="show-trackable-points-btn" class="icon-btn pointer-cursor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M384 192c0 87.4-117 243-168.3 307.2c-12.3 15.3-35.1 15.3-47.4 0C117 435 0 279.4 0 192C0 86 86 0 192 0S384 86 384 192z"/></svg>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="content">
+            <div id="analyze">
+            <span id="analyze-text-simulation" style="display: none;">
+                Analyzing
+
+                <div class="dot-container">
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                </div>
+            </span>
+
+                <div id="analyze-boxes" style="display: none">
+                    <div id="carNumberBox" class="box">
+                        <span class="box-title">Car identification number</span>
+
+                        <img src="/assets/spz-DkLunK1N.png" />
+                    </div>
+
+                    <div id="car-view-box" class="box">
+                        <span class="box-title">Car view</span>
+
+                        <img src="/assets/car-1-BiqblVrL.png" />
+                    </div>
+
+                    <div id="driver-box" class="box">
+                        <span class="box-title">Driver view</span>
+
+                        <div id="driver-images">
+                            <img id="avatar" src="/assets/lukas_maska-B3GB0oHZ.jpg" />
+                            <img id="driver-licence" src="/assets/driver-licence-CrUb5ovX.png" />
+                        </div>
+                        <div style="text-align: center">
+                            <a href="https://www.linkedin.com/in/luk%C3%A1%C5%A1-m-442bb61b0/" target="_blank">Enter LinkedIn</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="video-player-box" style="display: none">
+            <div id="video-player-bar">
+                <span class="street-camera-bar-text">Video recording</span>
+                <svg id="close-video-player-btn" class="secondary-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
+            </div>
+            <video id="videoPlayer" autoplay  controls></video>
+        </div>
+
+        <div id="car-gas">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M32 64C32 28.7 60.7 0 96 0H256c35.3 0 64 28.7 64 64V256h8c48.6 0 88 39.4 88 88v32c0 13.3 10.7 24 24 24s24-10.7 24-24V222c-27.6-7.1-48-32.2-48-62V96L384 64c-8.8-8.8-8.8-23.2 0-32s23.2-8.8 32 0l77.3 77.3c12 12 18.7 28.3 18.7 45.3V168v24 32V376c0 39.8-32.2 72-72 72s-72-32.2-72-72V344c0-22.1-17.9-40-40-40h-8V448c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32V64zM96 80v96c0 8.8 7.2 16 16 16H240c8.8 0 16-7.2 16-16V80c0-8.8-7.2-16-16-16H112c-8.8 0-16 7.2-16 16z"/></svg>
+            <div id="car-gas-bar">
+                <div id="car-gas-bar-inside"></div>
+            </div>
+        </div>
+
+        <div id="car-road-process">
+            <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 25px" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M135.2 117.4L109.1 192H402.9l-26.1-74.6C372.3 104.6 360.2 96 346.6 96H165.4c-13.6 0-25.7 8.6-30.2 21.4zM39.6 196.8L74.8 96.3C88.3 57.8 124.6 32 165.4 32H346.6c40.8 0 77.1 25.8 90.6 64.3l35.2 100.5c23.2 9.6 39.6 32.5 39.6 59.2V400v48c0 17.7-14.3 32-32 32H448c-17.7 0-32-14.3-32-32V400H96v48c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V400 256c0-26.7 16.4-49.6 39.6-59.2zM128 288a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm288 32a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/></svg>
+            <div id="car-road-bar">
+                <div id="car-road-bar-inside"></div>
+            </div>
+
+            <svg xmlns="http://www.w3.org/2000/svg" style="margin-left: 25px" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M64 32C64 14.3 49.7 0 32 0S0 14.3 0 32V64 368 480c0 17.7 14.3 32 32 32s32-14.3 32-32V352l64.3-16.1c41.1-10.3 84.6-5.5 122.5 13.4c44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0c-35.1-17.6-75.4-22-113.5-12.5L64 48V32z"/></svg>    </div>
+
+        <div id="defeat" class="end-message" style="display: none">
+            <img src="/assets/defeat-DvT-CKfr.png" />
+        </div>
+
+        <div id="victory" class="end-message" style="display: none">
+            <img src="/assets/victory-Cs7E-uKk.png" />
+        </div>
+
+        <div id="keyboard-guide">
+            <img src="/assets/mouse-icons-DldKNjTp.png" id="mouse-symbol" />
+            <img src="data:image/png;base64,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" id="arrows-symbol"/>
+        </div>
+    </div>
+
+</body>
+</html>
