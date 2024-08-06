@@ -1,0 +1,2 @@
+ - website: https://maskalukas98.github.io/3d-path-finder/
+ -> it works only on chrome (not mobile, safari), coding for fun 
